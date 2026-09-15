@@ -10,7 +10,7 @@ export default function CategorySection() {
       name: "Protein",
       icon: Milk,
       desc: "Biozyme Whey, Raw Whey & Isolates",
-      count: "15+ Products",
+      count: "15 Products",
       bg: "bg-rose-50 hover:bg-rose-100/80 text-rose-900 border-rose-200",
       iconBg: "bg-rose-600 text-white",
       href: "/shop?category=Protein"
@@ -19,46 +19,46 @@ export default function CategorySection() {
       name: "Creatine",
       icon: Dumbbell,
       desc: "CreAMP & Pure Monohydrate",
-      count: "8+ Products",
+      count: "1 Product",
       bg: "bg-amber-50 hover:bg-amber-100/80 text-amber-900 border-amber-200",
       iconBg: "bg-amber-600 text-white",
       href: "/shop?category=Creatine"
     },
     {
-      name: "Oats",
-      icon: UtensilsCrossed,
-      desc: "High Protein Chocolate & Rolled Oats",
-      count: "10+ Products",
-      bg: "bg-emerald-50 hover:bg-emerald-100/80 text-emerald-900 border-emerald-200",
-      iconBg: "bg-emerald-600 text-white",
-      href: "/shop?category=Oats"
+      name: "Pre-Workout & BCAA",
+      icon: Sparkles,
+      desc: "BCAA 6000, Pre-Workout 200 & EAA",
+      count: "3 Products",
+      bg: "bg-purple-50 hover:bg-purple-100/80 text-purple-900 border-purple-200",
+      iconBg: "bg-purple-600 text-white",
+      href: "/shop?category=Pre-Workout+%26+BCAA"
     },
     {
-      name: "Muesli",
-      icon: Wheat,
-      desc: "Super Fruit, Nut & Seed Muesli",
-      count: "6+ Products",
+      name: "Vitamins & Wellness",
+      icon: Milk,
+      desc: "Fish Oil, Daily Multivitamin & Omega-3",
+      count: "15 Products",
       bg: "bg-blue-50 hover:bg-blue-100/80 text-blue-900 border-blue-200",
       iconBg: "bg-blue-600 text-white",
-      href: "/shop?category=Muesli"
+      href: "/shop?category=Vitamins+%26+Wellness"
     },
     {
       name: "Peanut Butter",
       icon: Nut,
       desc: "100% All-Natural, Organic & Chocolate",
-      count: "16+ Products",
+      count: "8 Products",
       bg: "bg-orange-50 hover:bg-orange-100/80 text-orange-900 border-orange-200",
       iconBg: "bg-orange-600 text-white",
       href: "/shop?category=Peanut+Butter"
     },
     {
-      name: "Best Sellers",
-      icon: Sparkles,
-      desc: "Top Rated MuscleBlaze, Pintola & Alpino",
-      count: "Top Rated",
-      bg: "bg-purple-50 hover:bg-purple-100/80 text-purple-900 border-purple-200",
-      iconBg: "bg-purple-600 text-white",
-      href: "/shop?filter=bestseller"
+      name: "Oats & Muesli",
+      icon: Wheat,
+      desc: "High Protein Chocolate Oats & Muesli",
+      count: "8 Products",
+      bg: "bg-emerald-50 hover:bg-emerald-100/80 text-emerald-900 border-emerald-200",
+      iconBg: "bg-emerald-600 text-white",
+      href: "/shop?category=Oats+%26+Muesli"
     }
   ];
 

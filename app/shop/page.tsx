@@ -125,8 +125,11 @@ function ShopContent() {
       // Strictly match selected brands
       if (selectedBrands.length > 0 && !selectedBrands.includes(p.brand)) return false;
 
-      // Strictly match selected categories
-      if (selectedCategories.length > 0 && !selectedCategories.includes(p.category)) return false;
+      // Strictly match selected categories (case-insensitive & whitespace trimmed)
+      if (selectedCategories.length > 0) {
+        const normSelected = selectedCategories.map(c => c.toLowerCase().trim());
+        if (!normSelected.includes(p.category.toLowerCase().trim())) return false;
+      }
 
       // Max price check
       if (p.price > maxPrice) return false;
@@ -228,7 +231,7 @@ function ShopContent() {
                 Category
               </h4>
               <div className="space-y-2">
-                {["Protein", "Creatine", "Oats", "Muesli", "Peanut Butter", "Vitamins & Wellness"].map(cat => (
+                {["Protein", "Creatine", "Pre-Workout & BCAA", "Vitamins & Wellness", "Peanut Butter", "Oats & Muesli"].map(cat => (
                   <label key={cat} className="flex items-center gap-2.5 text-xs text-slate-700 font-semibold cursor-pointer">
                     <input
                       type="checkbox"

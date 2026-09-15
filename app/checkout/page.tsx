@@ -64,6 +64,15 @@ export default function CheckoutPage() {
   }, []);
 
   const [paymentMethod, setPaymentMethod] = useState<"UPI" | "Card" | "NetBanking" | "COD">("UPI");
+  // Interactive Payment Field State
+  const [upiId, setUpiId] = useState("");
+  const [upiMode, setUpiMode] = useState<"vpa" | "qr">("vpa");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvv, setCardCvv] = useState("");
+  const [selectedBank, setSelectedBank] = useState("HDFC Bank");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (cart.length === 0) {
@@ -88,8 +97,25 @@ export default function CheckoutPage() {
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !phone || !street || !city || !state || !pincode) {
-      alert("Please fill in all address fields.");
+      alert("Please fill in all shipping address fields.");
       return;
+    }
+
+    if (paymentMethod === "UPI" && upiMode === "vpa" && (!upiId || !upiId.includes("@"))) {
+      alert("Please enter a valid UPI VPA ID (e.g. 9876543210@paytm or username@okicici).");
+      return;
+    }
+
+    if (paymentMethod === "Card") {
+      const cleanNum = cardNumber.replace(/\s/g, "");
+      if (cleanNum.length < 16) {
+        alert("Please enter a valid 16-digit Card Number.");
+        return;
+      }
+      if (!cardExpiry || !cardCvv) {
+        alert("Please enter Card Expiration date (MM/YY) and 3-digit CVV.");
+        return;
+      }
     }
 
     setIsSubmitting(true);
@@ -276,15 +302,10 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Payment Selection Options */}
-                <div className="space-y-3">
-                  <label
-                    className={`p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                      paymentMethod === "UPI"
-                        ? "border-rose-600 bg-rose-50/50 text-slate-900"
-                        : "border-slate-200 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                <div className="space-y-4">
+                  {/* Option 1: UPI */}
+                  <div className={`p-4 rounded-2xl border transition-all ${paymentMethod === "UPI" ? "border-rose-600 bg-rose-50/40 shadow-sm" : "border-slate-200 bg-white"}`}>
+                    <label className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="radio"
                         name="payment"
@@ -294,20 +315,58 @@ export default function CheckoutPage() {
                       />
                       <QrCode className="w-5 h-5 text-rose-600" />
                       <div>
-                        <div className="font-bold text-xs">UPI Instant (GPay / PhonePe / Paytm)</div>
+                        <div className="font-bold text-xs">UPI Instant (GPay / PhonePe / Paytm / BHIM)</div>
                         <div className="text-[11px] text-slate-500">Fastest checkout with 0 transaction fees</div>
                       </div>
-                    </div>
-                  </label>
+                    </label>
 
-                  <label
-                    className={`p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                      paymentMethod === "Card"
-                        ? "border-rose-600 bg-rose-50/50 text-slate-900"
-                        : "border-slate-200 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                    {paymentMethod === "UPI" && (
+                      <div className="mt-4 pt-3 border-t border-rose-200/60 space-y-3">
+                        <div className="flex items-center gap-2 text-xs">
+                          <button
+                            type="button"
+                            onClick={() => setUpiMode("vpa")}
+                            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${upiMode === "vpa" ? "bg-rose-600 text-white" : "bg-white text-slate-700 border border-slate-200"}`}
+                          >
+                            Enter UPI VPA ID
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setUpiMode("qr")}
+                            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${upiMode === "qr" ? "bg-rose-600 text-white" : "bg-white text-slate-700 border border-slate-200"}`}
+                          >
+                            Scan QR Code
+                          </button>
+                        </div>
+
+                        {upiMode === "vpa" ? (
+                          <div className="space-y-1">
+                            <label className="text-[11px] font-bold text-slate-800 uppercase block">Virtual Payment Address (UPI ID)</label>
+                            <input
+                              type="text"
+                              placeholder="e.g. 9876543210@paytm, user@okicici, user@ybl"
+                              value={upiId}
+                              onChange={e => setUpiId(e.target.value)}
+                              className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-rose-500"
+                            />
+                            <p className="text-[10px] text-slate-500">You will receive a payment request notification on your UPI App.</p>
+                          </div>
+                        ) : (
+                          <div className="p-4 bg-white rounded-2xl border border-slate-200 text-center space-y-2">
+                            <div className="w-32 h-32 bg-slate-100 rounded-xl mx-auto flex items-center justify-center border text-slate-400 font-bold text-xs">
+                              [ QR CODE ]
+                            </div>
+                            <p className="text-xs font-bold text-slate-800">Scan using GPay, PhonePe, Paytm, or BHIM</p>
+                            <p className="text-[10px] text-slate-500">Amount: ₹{cartTotal.toLocaleString("en-IN")}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Option 2: Credit / Debit Card */}
+                  <div className={`p-4 rounded-2xl border transition-all ${paymentMethod === "Card" ? "border-rose-600 bg-rose-50/40 shadow-sm" : "border-slate-200 bg-white"}`}>
+                    <label className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="radio"
                         name="payment"
@@ -320,17 +379,63 @@ export default function CheckoutPage() {
                         <div className="font-bold text-xs">Credit & Debit Cards</div>
                         <div className="text-[11px] text-slate-500">Visa, Mastercard, RuPay, Amex</div>
                       </div>
-                    </div>
-                  </label>
+                    </label>
 
-                  <label
-                    className={`p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                      paymentMethod === "NetBanking"
-                        ? "border-rose-600 bg-rose-50/50 text-slate-900"
-                        : "border-slate-200 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                    {paymentMethod === "Card" && (
+                      <div className="mt-4 pt-3 border-t border-rose-200/60 grid grid-cols-2 gap-3 text-xs">
+                        <div className="col-span-2">
+                          <label className="font-bold text-slate-800 uppercase block mb-1 text-[11px]">Card Number</label>
+                          <input
+                            type="text"
+                            placeholder="4532 •••• •••• 8910"
+                            value={cardNumber}
+                            onChange={e => setCardNumber(e.target.value)}
+                            maxLength={19}
+                            className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-semibold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                          />
+                        </div>
+
+                        <div className="col-span-2 sm:col-span-1">
+                          <label className="font-bold text-slate-800 uppercase block mb-1 text-[11px]">Name on Card</label>
+                          <input
+                            type="text"
+                            placeholder="Full Name as on Card"
+                            value={cardName}
+                            onChange={e => setCardName(e.target.value)}
+                            className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-semibold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="font-bold text-slate-800 uppercase block mb-1 text-[11px]">Expiry Date</label>
+                          <input
+                            type="text"
+                            placeholder="MM / YY"
+                            value={cardExpiry}
+                            onChange={e => setCardExpiry(e.target.value)}
+                            maxLength={5}
+                            className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-semibold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="font-bold text-slate-800 uppercase block mb-1 text-[11px]">CVV / CVC</label>
+                          <input
+                            type="password"
+                            placeholder="3 digits"
+                            value={cardCvv}
+                            onChange={e => setCardCvv(e.target.value)}
+                            maxLength={4}
+                            className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-semibold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Option 3: Net Banking */}
+                  <div className={`p-4 rounded-2xl border transition-all ${paymentMethod === "NetBanking" ? "border-rose-600 bg-rose-50/40 shadow-sm" : "border-slate-200 bg-white"}`}>
+                    <label className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="radio"
                         name="payment"
@@ -343,17 +448,30 @@ export default function CheckoutPage() {
                         <div className="font-bold text-xs">Net Banking</div>
                         <div className="text-[11px] text-slate-500">All major Indian banks supported</div>
                       </div>
-                    </div>
-                  </label>
+                    </label>
 
-                  <label
-                    className={`p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                      paymentMethod === "COD"
-                        ? "border-rose-600 bg-rose-50/50 text-slate-900"
-                        : "border-slate-200 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                    {paymentMethod === "NetBanking" && (
+                      <div className="mt-4 pt-3 border-t border-rose-200/60 space-y-2">
+                        <label className="text-[11px] font-bold text-slate-800 uppercase block">Select Your Bank</label>
+                        <select
+                          value={selectedBank}
+                          onChange={e => setSelectedBank(e.target.value)}
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-rose-500"
+                        >
+                          <option value="HDFC Bank">HDFC Bank</option>
+                          <option value="ICICI Bank">ICICI Bank</option>
+                          <option value="State Bank of India">State Bank of India (SBI)</option>
+                          <option value="Axis Bank">Axis Bank</option>
+                          <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                          <option value="Punjab National Bank">Punjab National Bank</option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Option 4: Cash on Delivery */}
+                  <div className={`p-4 rounded-2xl border transition-all ${paymentMethod === "COD" ? "border-rose-600 bg-rose-50/40 shadow-sm" : "border-slate-200 bg-white"}`}>
+                    <label className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="radio"
                         name="payment"
@@ -364,10 +482,10 @@ export default function CheckoutPage() {
                       <Banknote className="w-5 h-5 text-amber-600" />
                       <div>
                         <div className="font-bold text-xs">Cash on Delivery (COD)</div>
-                        <div className="text-[11px] text-slate-500">Pay cash upon product delivery</div>
+                        <div className="text-[11px] text-slate-500">Pay cash upon product delivery at your doorstep</div>
                       </div>
-                    </div>
-                  </label>
+                    </label>
+                  </div>
                 </div>
 
                 <button

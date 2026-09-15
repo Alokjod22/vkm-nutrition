@@ -49,13 +49,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/shop?category=Oats" className="hover:text-white transition-colors">
-                  High Protein Oats
+                <Link href="/shop?category=Oats+%26+Muesli" className="hover:text-white transition-colors">
+                  High Protein Oats & Muesli
                 </Link>
               </li>
               <li>
-                <Link href="/shop?category=Muesli" className="hover:text-white transition-colors">
-                  Super Fruit & Nut Muesli
+                <Link href="/shop?category=Vitamins+%26+Wellness" className="hover:text-white transition-colors">
+                  Vitamins & Wellness
                 </Link>
               </li>
               <li>
