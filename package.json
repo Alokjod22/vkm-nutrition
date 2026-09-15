@@ -1,5 +1,5 @@
 {
-  "name": "nutribulk",
+  "name": "vkm-nutrition",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,9 +15,7 @@
     "lucide-react": "^0.453.0",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.5.4",
-    "framer-motion": "^11.11.9"
-  },
-  "devDependencies": {
+    "framer-motion": "^11.11.9",
     "@types/node": "^20.17.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
@@ -25,5 +23,8 @@
     "tailwindcss": "^3.4.14",
     "postcss": "^8.4.47",
     "autoprefixer": "^10.4.20"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }
