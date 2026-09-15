@@ -36,14 +36,32 @@ export default function CheckoutPage() {
 
   const [step, setStep] = useState<1 | 2>(1);
 
-  // Form Fields
-  const [name, setName] = useState("Rahul Verma");
-  const [email, setEmail] = useState("rahul.verma@example.com");
-  const [phone, setPhone] = useState("9876543210");
-  const [street, setStreet] = useState("42 Connaught Place, Block B");
-  const [city, setCity] = useState("New Delhi");
-  const [state, setState] = useState("Delhi");
-  const [pincode, setPincode] = useState("110001");
+  // Form Fields - default to empty strings, auto-load from localStorage if user previously saved address
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [pincode, setPincode] = useState("");
+
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem("nb_customer_address");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.name) setName(parsed.name);
+        if (parsed.email) setEmail(parsed.email);
+        if (parsed.phone) setPhone(parsed.phone);
+        if (parsed.street) setStreet(parsed.street);
+        if (parsed.city) setCity(parsed.city);
+        if (parsed.state) setState(parsed.state);
+        if (parsed.pincode) setPincode(parsed.pincode);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   const [paymentMethod, setPaymentMethod] = useState<"UPI" | "Card" | "NetBanking" | "COD">("UPI");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -104,6 +122,18 @@ export default function CheckoutPage() {
       trackingNumber: "DELHIEXPRESS-" + Math.floor(100000 + Math.random() * 900000)
     });
 
+    // Save customer order ID and address to localStorage so customer account page only shows their own orders
+    try {
+      const existingSaved: string[] = JSON.parse(localStorage.getItem("nb_customer_order_ids") || "[]");
+      if (!existingSaved.includes(newOrder.id)) {
+        existingSaved.unshift(newOrder.id);
+        localStorage.setItem("nb_customer_order_ids", JSON.stringify(existingSaved));
+      }
+      localStorage.setItem("nb_customer_address", JSON.stringify({ name, street, city, state, pincode, phone }));
+    } catch (err) {
+      console.error("Failed to save order session to localStorage", err);
+    }
+
     clearCart();
     showNotification("Order placed successfully! Redirecting...");
 
@@ -149,6 +179,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">Full Name</label>
                     <input
                       type="text"
+                      placeholder="e.g. Rahul Verma"
                       value={name}
                       onChange={e => setName(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"
@@ -159,6 +190,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">Mobile Number</label>
                     <input
                       type="text"
+                      placeholder="10-digit mobile number"
                       value={phone}
                       onChange={e => setPhone(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"
@@ -169,6 +201,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">Email Address</label>
                     <input
                       type="email"
+                      placeholder="your.email@example.com"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"
@@ -179,6 +212,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">Street Address</label>
                     <input
                       type="text"
+                      placeholder="House/Flat No., Building, Street Name"
                       value={street}
                       onChange={e => setStreet(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"
@@ -189,6 +223,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">City</label>
                     <input
                       type="text"
+                      placeholder="e.g. New Delhi"
                       value={city}
                       onChange={e => setCity(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"
@@ -199,6 +234,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">State</label>
                     <input
                       type="text"
+                      placeholder="e.g. Delhi"
                       value={state}
                       onChange={e => setState(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"
@@ -209,6 +245,7 @@ export default function CheckoutPage() {
                     <label className="font-bold text-slate-800 uppercase block mb-1">Pincode</label>
                     <input
                       type="text"
+                      placeholder="6-digit pincode"
                       value={pincode}
                       onChange={e => setPincode(e.target.value)}
                       className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-semibold text-slate-900"

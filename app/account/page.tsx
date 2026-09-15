@@ -24,22 +24,41 @@ function AccountContent() {
   const highlightedOrderId = searchParams?.get("orderId") || "";
 
   const { wishlist } = useStore();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
-  const [activeTab, setActiveTab] = useState<"orders" | "wishlist" | "addresses">("orders");
-  const [orderSearchId, setOrderSearchId] = useState<string>("");
+  const [savedAddress, setSavedAddress] = useState<{ name: string; street: string; city: string; state: string; pincode: string; phone: string } | null>(null);
 
   useEffect(() => {
-    setOrders(db.getOrders());
+    let savedOrderIds: string[] = [];
+    try {
+      savedOrderIds = JSON.parse(localStorage.getItem("nb_customer_order_ids") || "[]");
+      const addr = localStorage.getItem("nb_customer_address");
+      if (addr) setSavedAddress(JSON.parse(addr));
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (highlightedOrderId && !savedOrderIds.includes(highlightedOrderId)) {
+      savedOrderIds.unshift(highlightedOrderId);
+      try {
+        localStorage.setItem("nb_customer_order_ids", JSON.stringify(savedOrderIds));
+      } catch (e) {}
+    }
+
+    const allOrders = db.getOrders();
+    // Only display orders that belong to this customer/session
+    const myOrders = allOrders.filter(o => savedOrderIds.includes(o.id));
+    setOrders(myOrders);
+
     const allProds = db.getProducts();
     setWishlistProducts(allProds.filter(p => wishlist.includes(p.id)));
-  }, [wishlist]);
+  }, [wishlist, highlightedOrderId]);
 
-  const displayedOrders = orders.filter(o => {
-    if (!orderSearchId.trim()) return true;
+  const displayedOrders = React.useMemo(() => {
     const q = orderSearchId.toLowerCase().trim();
-    return o.orderNumber.toLowerCase().includes(q) || o.id.toLowerCase().includes(q);
-  });
+    if (!q) return orders;
+    // When searching explicitly by order number or ID, allow lookup across database
+    const all = db.getOrders();
+    return all.filter(o => o.orderNumber.toLowerCase().includes(q) || o.id.toLowerCase().includes(q));
+  }, [orders, orderSearchId]);
 
   const getStatusStep = (status: Order["orderStatus"]) => {
     switch (status) {
@@ -255,12 +274,18 @@ function AccountContent() {
             <MapPin className="w-4 h-4 text-rose-600" />
             <span>Default Delivery Address</span>
           </div>
-          <p className="text-xs text-slate-600 leading-relaxed font-medium">
-            Rahul Verma<br />
-            42 Connaught Place, Block B<br />
-            New Delhi, Delhi - 110001<br />
-            Mobile: +91 98765 43210
-          </p>
+          {savedAddress ? (
+            <p className="text-xs text-slate-600 leading-relaxed font-medium">
+              <strong className="text-slate-900">{savedAddress.name}</strong><br />
+              {savedAddress.street}<br />
+              {savedAddress.city}, {savedAddress.state} - {savedAddress.pincode}<br />
+              Mobile: +91 {savedAddress.phone}
+            </p>
+          ) : (
+            <p className="text-xs text-slate-500 font-medium">
+              No saved delivery address found. Your address will be saved here automatically when you place an order.
+            </p>
+          )}
         </div>
       )}
     </main>
