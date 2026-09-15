@@ -124,8 +124,8 @@ export const INITIAL_PRODUCTS: Product[] = [
     flavours: ["Rich Chocolate", "Café Mocha", "Magical Mango"],
     sizes: ["1 KG", "2 KG"],
     variants: [
-      { id: "mb-01-1", name: "Rich Chocolate / 1 KG", price: 2999, mrp: 3499, stock: 25 },
-      { id: "mb-01-2", name: "Rich Chocolate / 2 KG", price: 5499, mrp: 6499, stock: 20 },
+      { id: "mb-01-v1", name: "1 KG", price: 2999, mrp: 3499, stock: 27 },
+      { id: "mb-01-v2", name: "2 KG", price: 5398, mrp: 6298, stock: 18 }
     ],
     status: "Active",
     createdAt: "2026-01-10"
@@ -152,7 +152,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Mix 1 scoop in smoothies, oatmeal, or water as per your protein requirements.",
     flavours: ["Unflavoured"],
     sizes: ["1 KG", "2 KG"],
-    variants: [{ id: "mb-02-1", name: "Unflavoured / 1 KG", price: 1899, mrp: 2299, stock: 30 }],
+    variants: [
+      { id: "mb-02-v1", name: "1 KG", price: 1899, mrp: 2299, stock: 18 },
+      { id: "mb-02-v2", name: "2 KG", price: 3418, mrp: 4138, stock: 12 }
+    ],
     status: "Active",
     createdAt: "2026-01-12"
   },
@@ -178,7 +181,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Consume 1-2 servings daily with whole milk between meals or post-workout.",
     flavours: ["Chocolate", "Banana", "Vanilla"],
     sizes: ["1 KG", "3 KG"],
-    variants: [{ id: "mb-03-1", name: "Chocolate / 1 KG", price: 2499, mrp: 2999, stock: 22 }],
+    variants: [
+      { id: "mb-03-v1", name: "1 KG", price: 2499, mrp: 2999, stock: 13 },
+      { id: "mb-03-v2", name: "3 KG", price: 6248, mrp: 7498, stock: 9 }
+    ],
     status: "Active",
     createdAt: "2026-01-14"
   },
@@ -204,7 +210,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Mix 1 scoop (3g) in 250ml water or fruit juice. Drink daily.",
     flavours: ["Unflavoured", "Fruit Punch", "Tangy Orange"],
     sizes: ["100g", "250g"],
-    variants: [{ id: "mb-04-1", name: "Unflavoured / 250g", price: 699, mrp: 899, stock: 60 }],
+    variants: [
+      { id: "mb-04-v1", name: "100g", price: 419, mrp: 539, stock: 36 },
+      { id: "mb-04-v2", name: "250g", price: 699, mrp: 899, stock: 24 }
+    ],
     status: "Active",
     createdAt: "2026-01-15"
   },
@@ -230,7 +239,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Take 1 scoop 20-30 minutes prior to intense training in 200ml cold water.",
     flavours: ["Fruit Splash", "Green Apple", "Blue Raspberry"],
     sizes: ["250g"],
-    variants: [{ id: "mb-05-1", name: "Fruit Splash / 250g", price: 999, mrp: 1299, stock: 35 }],
+    variants: [
+      { id: "mb-05-v1", name: "250g", price: 999, mrp: 1299, stock: 35 }
+    ],
     status: "Active",
     createdAt: "2026-01-16"
   },
@@ -256,7 +267,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on whole wheat bread, mix in smoothies, or eat straight from jar.",
     flavours: ["Dark Chocolate", "Classic Crunchy"],
     sizes: ["1 KG"],
-    variants: [{ id: "mb-06-1", name: "Dark Chocolate / 1 KG", price: 499, mrp: 649, stock: 40 }],
+    variants: [
+      { id: "mb-06-v1", name: "1 KG", price: 499, mrp: 649, stock: 40 }
+    ],
     status: "Active",
     createdAt: "2026-01-18"
   },
@@ -282,7 +295,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Boil 50g oats in 200ml milk for 3 minutes or soak overnight.",
     flavours: ["Dark Chocolate", "Berry Blast"],
     sizes: ["1 KG"],
-    variants: [{ id: "mb-07-1", name: "Dark Chocolate / 1 KG", price: 399, mrp: 499, stock: 50 }],
+    variants: [
+      { id: "mb-07-v1", name: "1 KG", price: 399, mrp: 499, stock: 50 }
+    ],
     status: "Active",
     createdAt: "2026-01-20"
   },
@@ -308,7 +323,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Take 1 softgel twice daily after meals with water.",
     flavours: ["Unflavoured"],
     sizes: ["60 Softgels"],
-    variants: [{ id: "mb-08-1", name: "60 Softgels", price: 849, mrp: 1099, stock: 28 }],
+    variants: [
+      { id: "mb-08-v1", name: "60 Softgels", price: 849, mrp: 1099, stock: 28 }
+    ],
     status: "Active",
     createdAt: "2026-01-22"
   },
@@ -334,7 +351,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Take 1 tablet daily with breakfast or lunch.",
     flavours: ["Unflavoured"],
     sizes: ["60 Tablets", "120 Tablets"],
-    variants: [{ id: "mb-09-1", name: "60 Tablets", price: 549, mrp: 699, stock: 55 }],
+    variants: [
+      { id: "mb-09-v1", name: "60 Tablets", price: 549, mrp: 699, stock: 33 },
+      { id: "mb-09-v2", name: "120 Tablets", price: 988, mrp: 1258, stock: 22 }
+    ],
     status: "Active",
     createdAt: "2026-01-24"
   },
@@ -360,7 +380,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Mix 1-2 scoops in milk or water post workout.",
     flavours: ["Chocolate Fudge"],
     sizes: ["1 KG"],
-    variants: [{ id: "mb-10-1", name: "1 KG", price: 1999, mrp: 2399, stock: 18 }],
+    variants: [
+      { id: "mb-10-v1", name: "1 KG", price: 1999, mrp: 2399, stock: 18 }
+    ],
     status: "Active",
     createdAt: "2026-01-25"
   },
@@ -386,7 +408,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Mix 1 scoop in 200ml water immediately post workout.",
     flavours: ["Strawberry Frost", "Chocolate Smooth"],
     sizes: ["1 KG", "2 KG"],
-    variants: [{ id: "mb-11-1", name: "Chocolate Smooth / 1 KG", price: 3699, mrp: 4299, stock: 25 }],
+    variants: [
+      { id: "mb-11-v1", name: "1 KG", price: 3699, mrp: 4299, stock: 15 },
+      { id: "mb-11-v2", name: "2 KG", price: 6658, mrp: 7738, stock: 10 }
+    ],
     status: "Active",
     createdAt: "2026-01-26"
   },
@@ -412,7 +437,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Enjoy as a convenient healthy snack anytime on-the-go.",
     flavours: ["Chocolate Hazelnut", "Choco Fudge"],
     sizes: ["Box of 6"],
-    variants: [{ id: "mb-12-1", name: "Box of 6 Bars", price: 899, mrp: 1080, stock: 35 }],
+    variants: [
+      { id: "mb-12-v1", name: "Box of 6", price: 899, mrp: 1080, stock: 35 }
+    ],
     status: "Active",
     createdAt: "2026-01-28"
   },
@@ -438,7 +465,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "1 scoop in 200ml cold water.",
     flavours: ["Gourmet Chocolate"],
     sizes: ["1 KG"],
-    variants: [{ id: "mb-13-1", name: "Gourmet Chocolate / 1 KG", price: 3899, mrp: 4499, stock: 15 }],
+    variants: [
+      { id: "mb-13-v1", name: "1 KG", price: 3899, mrp: 4499, stock: 15 }
+    ],
     status: "Active",
     createdAt: "2026-01-30"
   },
@@ -464,7 +493,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Sip 1 scoop in 500ml water throughout your workout session.",
     flavours: ["Watermelon", "Fruit Punch"],
     sizes: ["450g"],
-    variants: [{ id: "mb-14-1", name: "Watermelon / 450g", price: 1199, mrp: 1499, stock: 24 }],
+    variants: [
+      { id: "mb-14-v1", name: "450g", price: 1199, mrp: 1499, stock: 24 }
+    ],
     status: "Active",
     createdAt: "2026-02-01"
   },
@@ -490,7 +521,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "1 scoop in 200ml milk or water.",
     flavours: ["Rich Milk Chocolate"],
     sizes: ["1 KG"],
-    variants: [{ id: "mb-15-1", name: "1 KG", price: 2299, mrp: 2699, stock: 30 }],
+    variants: [
+      { id: "mb-15-v1", name: "1 KG", price: 2299, mrp: 2699, stock: 30 }
+    ],
     status: "Active",
     createdAt: "2026-02-02"
   },
@@ -516,7 +549,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "1 tablet daily after breakfast.",
     flavours: ["Unflavoured"],
     sizes: ["60 Tablets"],
-    variants: [{ id: "mb-16-1", name: "60 Tablets", price: 699, mrp: 899, stock: 40 }],
+    variants: [
+      { id: "mb-16-v1", name: "60 Tablets", price: 699, mrp: 899, stock: 40 }
+    ],
     status: "Active",
     createdAt: "2026-02-04"
   },
@@ -542,7 +577,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on toast or add to protein shakes.",
     flavours: ["Crunchy"],
     sizes: ["1 KG"],
-    variants: [{ id: "mb-17-1", name: "1 KG", price: 349, mrp: 449, stock: 45 }],
+    variants: [
+      { id: "mb-17-v1", name: "1 KG", price: 349, mrp: 449, stock: 45 }
+    ],
     status: "Active",
     createdAt: "2026-02-05"
   },
@@ -570,7 +607,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on brown bread, fruit slices, or add to smoothie bowls.",
     flavours: ["Crunchy", "Smooth"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-01-1", name: "Crunchy / 1 KG", price: 349, mrp: 425, stock: 50 }],
+    variants: [
+      { id: "alp-01-v1", name: "1 KG", price: 349, mrp: 425, stock: 50 }
+    ],
     status: "Active",
     createdAt: "2026-01-11"
   },
@@ -596,7 +635,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Perfect topping for breakfast pancakes, oatmeal, and protein toasts.",
     flavours: ["Dark Chocolate"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-02-1", name: "1 KG", price: 449, mrp: 549, stock: 35 }],
+    variants: [
+      { id: "alp-02-v1", name: "1 KG", price: 449, mrp: 549, stock: 35 }
+    ],
     status: "Active",
     createdAt: "2026-01-13"
   },
@@ -622,7 +663,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Blends effortlessly into protein shakes and dip bowls.",
     flavours: ["Smooth"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-03-1", name: "1 KG", price: 329, mrp: 399, stock: 40 }],
+    variants: [
+      { id: "alp-03-v1", name: "1 KG", price: 329, mrp: 399, stock: 40 }
+    ],
     status: "Active",
     createdAt: "2026-01-15"
   },
@@ -648,7 +691,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Daily keto and fitness diet spread.",
     flavours: ["Crunchy"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-04-1", name: "1 KG", price: 399, mrp: 499, stock: 25 }],
+    variants: [
+      { id: "alp-04-v1", name: "1 KG", price: 399, mrp: 499, stock: 25 }
+    ],
     status: "Active",
     createdAt: "2026-01-17"
   },
@@ -674,7 +719,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on whole grain toasts.",
     flavours: ["Seeds Crunch"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-05-1", name: "1 KG", price: 359, mrp: 449, stock: 30 }],
+    variants: [
+      { id: "alp-05-v1", name: "1 KG", price: 359, mrp: 449, stock: 30 }
+    ],
     status: "Active",
     createdAt: "2026-01-19"
   },
@@ -700,7 +747,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Cook in hot milk for 3 minutes or make cold overnight oats.",
     flavours: ["Dark Chocolate", "Jaggery Nuts"],
     sizes: ["400g", "1 KG"],
-    variants: [{ id: "alp-06-1", name: "Dark Chocolate / 1 KG", price: 349, mrp: 425, stock: 45 }],
+    variants: [
+      { id: "alp-06-v1", name: "400g", price: 349, mrp: 425, stock: 27 },
+      { id: "alp-06-v2", name: "1 KG", price: 768, mrp: 935, stock: 18 }
+    ],
     status: "Active",
     createdAt: "2026-01-21"
   },
@@ -726,7 +776,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Mix 2 tbsp powder with 1 tbsp water to make low-calorie peanut butter paste.",
     flavours: ["Original"],
     sizes: ["250g"],
-    variants: [{ id: "alp-07-1", name: "250g", price: 399, mrp: 499, stock: 20 }],
+    variants: [
+      { id: "alp-07-v1", name: "250g", price: 399, mrp: 499, stock: 20 }
+    ],
     status: "Active",
     createdAt: "2026-01-23"
   },
@@ -752,7 +804,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Dilute 1-2 tbsp (15ml) in a glass of warm water 20 mins before meals.",
     flavours: ["Natural Apple"],
     sizes: ["500ml"],
-    variants: [{ id: "alp-08-1", name: "500ml", price: 299, mrp: 399, stock: 35 }],
+    variants: [
+      { id: "alp-08-v1", name: "500ml", price: 299, mrp: 399, stock: 35 }
+    ],
     status: "Active",
     createdAt: "2026-01-25"
   },
@@ -778,7 +832,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on waffles, pancakes, or toast.",
     flavours: ["Smooth Cocoa"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-09-1", name: "1 KG", price: 369, mrp: 449, stock: 28 }],
+    variants: [
+      { id: "alp-09-v1", name: "1 KG", price: 369, mrp: 449, stock: 28 }
+    ],
     status: "Active",
     createdAt: "2026-01-27"
   },
@@ -804,7 +860,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Ideal for clean muscle building diets.",
     flavours: ["Unsweetened"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-10-1", name: "1 KG", price: 339, mrp: 399, stock: 40 }],
+    variants: [
+      { id: "alp-10-v1", name: "1 KG", price: 339, mrp: 399, stock: 40 }
+    ],
     status: "Active",
     createdAt: "2026-01-29"
   },
@@ -830,7 +888,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Enjoy right off the spoon!",
     flavours: ["Dark Choco Crunch"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-11-1", name: "1 KG", price: 379, mrp: 469, stock: 32 }],
+    variants: [
+      { id: "alp-11-v1", name: "1 KG", price: 379, mrp: 469, stock: 32 }
+    ],
     status: "Active",
     createdAt: "2026-01-31"
   },
@@ -856,7 +916,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Boil in milk for 3 minutes.",
     flavours: ["Belgian Cocoa"],
     sizes: ["400g"],
-    variants: [{ id: "alp-12-1", name: "400g", price: 329, mrp: 399, stock: 22 }],
+    variants: [
+      { id: "alp-12-v1", name: "400g", price: 329, mrp: 399, stock: 22 }
+    ],
     status: "Active",
     createdAt: "2026-02-01"
   },
@@ -882,7 +944,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on apple slices or whole grain breads.",
     flavours: ["Smooth Almond"],
     sizes: ["500g"],
-    variants: [{ id: "alp-13-1", name: "500g", price: 699, mrp: 899, stock: 18 }],
+    variants: [
+      { id: "alp-13-v1", name: "500g", price: 699, mrp: 899, stock: 18 }
+    ],
     status: "Active",
     createdAt: "2026-02-03"
   },
@@ -908,7 +972,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Pour cold milk or yogurt over 50g muesli and enjoy crisp breakfast.",
     flavours: ["Fruit & Nut Crunch"],
     sizes: ["400g"],
-    variants: [{ id: "alp-14-1", name: "400g", price: 429, mrp: 525, stock: 30 }],
+    variants: [
+      { id: "alp-14-v1", name: "400g", price: 429, mrp: 525, stock: 30 }
+    ],
     status: "Active",
     createdAt: "2026-02-04"
   },
@@ -934,7 +1000,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Daily sandwich spread.",
     flavours: ["Classic Crunchy"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-15-1", name: "1 KG", price: 299, mrp: 369, stock: 45 }],
+    variants: [
+      { id: "alp-15-v1", name: "1 KG", price: 299, mrp: 369, stock: 45 }
+    ],
     status: "Active",
     createdAt: "2026-02-05"
   },
@@ -960,7 +1028,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Pre/post workout fuel.",
     flavours: ["Unsweetened"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-16-1", name: "1 KG", price: 429, mrp: 525, stock: 25 }],
+    variants: [
+      { id: "alp-16-v1", name: "1 KG", price: 429, mrp: 525, stock: 25 }
+    ],
     status: "Active",
     createdAt: "2026-02-06"
   },
@@ -986,7 +1056,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Healthy guilt-free Indian dessert spread.",
     flavours: ["Organic Jaggery"],
     sizes: ["1 KG"],
-    variants: [{ id: "alp-17-1", name: "1 KG", price: 369, mrp: 449, stock: 30 }],
+    variants: [
+      { id: "alp-17-v1", name: "1 KG", price: 369, mrp: 449, stock: 30 }
+    ],
     status: "Active",
     createdAt: "2026-02-07"
   },
@@ -1014,7 +1086,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on whole grain bread, apples, or consume directly.",
     flavours: ["Natural Crunchy", "Natural Smooth"],
     sizes: ["1 KG", "2.5 KG"],
-    variants: [{ id: "pin-01-1", name: "Natural Crunchy / 1 KG", price: 349, mrp: 425, stock: 65 }],
+    variants: [
+      { id: "pin-01-v1", name: "1 KG", price: 349, mrp: 425, stock: 39 },
+      { id: "pin-01-v2", name: "2.5 KG", price: 768, mrp: 935, stock: 26 }
+    ],
     status: "Active",
     createdAt: "2026-01-09"
   },
@@ -1040,7 +1115,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Perfect for fitness enthusiasts wanting chocolate flavor without compromising protein.",
     flavours: ["Dark Chocolate"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-02-1", name: "1 KG", price: 499, mrp: 599, stock: 45 }],
+    variants: [
+      { id: "pin-02-v1", name: "1 KG", price: 499, mrp: 599, stock: 45 }
+    ],
     status: "Active",
     createdAt: "2026-01-12"
   },
@@ -1066,7 +1143,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Add to protein shakes or keto bowls.",
     flavours: ["Organic Smooth"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-03-1", name: "1 KG", price: 399, mrp: 499, stock: 30 }],
+    variants: [
+      { id: "pin-03-v1", name: "1 KG", price: 399, mrp: 499, stock: 30 }
+    ],
     status: "Active",
     createdAt: "2026-01-14"
   },
@@ -1092,7 +1171,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Eat pre-workout for long endurance.",
     flavours: ["Performance Blend"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-04-1", name: "1 KG", price: 449, mrp: 549, stock: 25 }],
+    variants: [
+      { id: "pin-04-v1", name: "1 KG", price: 449, mrp: 549, stock: 25 }
+    ],
     status: "Active",
     createdAt: "2026-01-16"
   },
@@ -1118,7 +1199,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Family sandwich favorite.",
     flavours: ["Classic Crunchy"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-05-1", name: "1 KG", price: 299, mrp: 369, stock: 55 }],
+    variants: [
+      { id: "pin-05-v1", name: "1 KG", price: 299, mrp: 369, stock: 55 }
+    ],
     status: "Active",
     createdAt: "2026-01-18"
   },
@@ -1144,7 +1227,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Boil in hot milk for 3 minutes for a creamy protein breakfast.",
     flavours: ["Dark Chocolate", "Berry Blast"],
     sizes: ["400g", "1 KG"],
-    variants: [{ id: "pin-06-1", name: "Dark Chocolate / 1 KG", price: 349, mrp: 425, stock: 40 }],
+    variants: [
+      { id: "pin-06-v1", name: "400g", price: 349, mrp: 425, stock: 24 },
+      { id: "pin-06-v2", name: "1 KG", price: 768, mrp: 935, stock: 16 }
+    ],
     status: "Active",
     createdAt: "2026-01-20"
   },
@@ -1170,7 +1256,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Top with Pintola Peanut Butter and banana slices.",
     flavours: ["Unsalted"],
     sizes: ["125g Pack"],
-    variants: [{ id: "pin-07-1", name: "125g Pack", price: 149, mrp: 180, stock: 60 }],
+    variants: [
+      { id: "pin-07-v1", name: "125g Pack", price: 149, mrp: 180, stock: 60 }
+    ],
     status: "Active",
     createdAt: "2026-01-22"
   },
@@ -1196,7 +1284,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on sourdough toast or fruit bowls.",
     flavours: ["Natural Almond"],
     sizes: ["500g"],
-    variants: [{ id: "pin-08-1", name: "500g", price: 749, mrp: 899, stock: 20 }],
+    variants: [
+      { id: "pin-08-v1", name: "500g", price: 749, mrp: 899, stock: 20 }
+    ],
     status: "Active",
     createdAt: "2026-01-24"
   },
@@ -1222,7 +1312,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Blends easily into morning smoothies.",
     flavours: ["Smooth"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-09-1", name: "1 KG", price: 339, mrp: 399, stock: 35 }],
+    variants: [
+      { id: "pin-09-v1", name: "1 KG", price: 339, mrp: 399, stock: 35 }
+    ],
     status: "Active",
     createdAt: "2026-01-26"
   },
@@ -1248,7 +1340,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Spread on crunchy toast.",
     flavours: ["Extra Crunchy"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-10-1", name: "1 KG", price: 359, mrp: 435, stock: 40 }],
+    variants: [
+      { id: "pin-10-v1", name: "1 KG", price: 359, mrp: 435, stock: 40 }
+    ],
     status: "Active",
     createdAt: "2026-01-28"
   },
@@ -1274,7 +1368,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Drizzle over waffles and oats.",
     flavours: ["Dark Cocoa Smooth"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-11-1", name: "1 KG", price: 379, mrp: 459, stock: 30 }],
+    variants: [
+      { id: "pin-11-v1", name: "1 KG", price: 379, mrp: 459, stock: 30 }
+    ],
     status: "Active",
     createdAt: "2026-01-30"
   },
@@ -1300,7 +1396,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Ideal for bodybuilders and active athletes.",
     flavours: ["Unsweetened Whey Blend"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-12-1", name: "1 KG", price: 479, mrp: 575, stock: 28 }],
+    variants: [
+      { id: "pin-12-v1", name: "1 KG", price: 479, mrp: 575, stock: 28 }
+    ],
     status: "Active",
     createdAt: "2026-02-01"
   },
@@ -1326,7 +1424,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Soak in almond milk or hot water.",
     flavours: ["Berry Nuts"],
     sizes: ["400g"],
-    variants: [{ id: "pin-13-1", name: "400g", price: 369, mrp: 449, stock: 22 }],
+    variants: [
+      { id: "pin-13-v1", name: "400g", price: 369, mrp: 449, stock: 22 }
+    ],
     status: "Active",
     createdAt: "2026-02-02"
   },
@@ -1352,7 +1452,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Gourmet baking and luxury toast spread.",
     flavours: ["Natural Cashew"],
     sizes: ["500g"],
-    variants: [{ id: "pin-14-1", name: "500g", price: 799, mrp: 999, stock: 15 }],
+    variants: [
+      { id: "pin-14-v1", name: "500g", price: 799, mrp: 999, stock: 15 }
+    ],
     status: "Active",
     createdAt: "2026-02-04"
   },
@@ -1378,7 +1480,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Healthy Indian sweet indulgence.",
     flavours: ["Organic Jaggery"],
     sizes: ["1 KG"],
-    variants: [{ id: "pin-15-1", name: "1 KG", price: 369, mrp: 449, stock: 35 }],
+    variants: [
+      { id: "pin-15-v1", name: "1 KG", price: 369, mrp: 449, stock: 35 }
+    ],
     status: "Active",
     createdAt: "2026-02-05"
   },
@@ -1404,7 +1508,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     howToUse: "Ideal for healthy daily cooking and salad dressings.",
     flavours: ["Unrefined Oil"],
     sizes: ["1 Litre"],
-    variants: [{ id: "pin-16-1", name: "1 Litre", price: 399, mrp: 499, stock: 25 }],
+    variants: [
+      { id: "pin-16-v1", name: "1 Litre", price: 399, mrp: 499, stock: 25 }
+    ],
     status: "Active",
     createdAt: "2026-02-06"
   }

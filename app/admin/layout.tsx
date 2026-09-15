@@ -98,7 +98,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-xs">
                 <div className="font-bold text-white">Admin</div>
                 <div className="text-[10px] text-slate-500 truncate max-w-[100px]">
-                  {adminUser?.email || "admin@nutribulk.in"}
+                  {adminUser?.email || "admin@vkmnutrition.in"}
                 </div>
               </div>
             </div>

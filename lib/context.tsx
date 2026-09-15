@@ -163,7 +163,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const cartTotal = Math.max(0, cartSubtotal - cartDiscount + cartDeliveryFee);
 
   const adminLogin = (email: string) => {
-    const user = { name: "NutriBulk Admin", email };
+    const user = { name: "VKM Nutrition Admin", email };
     setAdminUser(user);
     localStorage.setItem("nb_admin_session", JSON.stringify(user));
     showNotification("Welcome back, Admin!");

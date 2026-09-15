@@ -9,7 +9,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { adminLogin } = useStore();
 
-  const [email, setEmail] = useState("admin@nutribulk.in");
+  const [email, setEmail] = useState("admin@vkmnutrition.in");
   const [password, setPassword] = useState("admin123");
 
   const handleSubmit = (e: React.FormEvent) => {

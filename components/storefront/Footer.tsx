@@ -20,7 +20,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
-              India's premier authentic marketplace for genuine MuscleBlaze, Pintola & Alpino products. Premium sports nutrition & healthy breakfast foods at wholesale prices.
+              India's premier authentic marketplace for genuine MuscleBlaze, Pintola & Alpino products. Premium sports nutrition & healthy food products at bulk tier prices.
             </p>
             <div className="flex items-center gap-3 text-slate-300 font-semibold">
               <PhoneCall className="w-4 h-4 text-rose-500" />
@@ -66,7 +66,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Brand Stores */}
+          {/* Col 3: Brand Hubs */}
           <div>
             <h4 className="font-extrabold text-white uppercase text-xs tracking-wider mb-4">
               Brand Hubs
@@ -74,17 +74,17 @@ export default function Footer() {
             <ul className="space-y-2.5 font-medium">
               <li>
                 <Link href="/brand/muscleblaze" className="hover:text-rose-400 transition-colors">
-                  MuscleBlaze Official Store
+                  MuscleBlaze Supplements
                 </Link>
               </li>
               <li>
                 <Link href="/brand/pintola" className="hover:text-amber-400 transition-colors">
-                  Pintola Organic Store
+                  Pintola Nut Butters
                 </Link>
               </li>
               <li>
                 <Link href="/brand/alpino" className="hover:text-emerald-400 transition-colors">
-                  Alpino Superfoods Store
+                  Alpino Superfoods
                 </Link>
               </li>
               <li>
@@ -94,7 +94,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/admin/login" className="hover:text-white transition-colors">
-                  Admin Portal Dashboard
+                  Admin Login
                 </Link>
               </li>
             </ul>
@@ -103,14 +103,14 @@ export default function Footer() {
           {/* Col 4: Trust Guarantee */}
           <div>
             <h4 className="font-extrabold text-white uppercase text-xs tracking-wider mb-4">
-              NutriBulk Guarantee
+              VKM Nutrition Guarantee
             </h4>
             <div className="space-y-3">
               <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
                 <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0" />
                 <div>
-                  <div className="font-bold text-white text-xs">100% Genuine</div>
-                  <div className="text-[10px] text-slate-400">Direct batch sourcing</div>
+                  <div className="font-bold text-white text-xs">100% Authentic</div>
+                  <div className="text-[10px] text-slate-400">Direct distributor sourcing</div>
                 </div>
               </div>
 
@@ -134,11 +134,11 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <p>© 2026 NutriBulk Inc. All rights reserved.</p>
+          <p>© 2026 VKM Nutrition. All rights reserved.</p>
           <div className="flex gap-4 font-medium">
-            <Link href="/shop" className="hover:text-white">Privacy Policy</Link>
-            <Link href="/shop" className="hover:text-white">Terms of Service</Link>
-            <Link href="/shop" className="hover:text-white">Shipping & Returns</Link>
+            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+            <Link href="/shipping-returns" className="hover:text-white">Shipping & Returns</Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,11 @@ import {
   ChevronRight,
   Plus,
   Minus,
-  CheckCircle2
+  CheckCircle2,
+  Package,
+  Calendar,
+  Building2,
+  Info
 } from "lucide-react";
 
 export default function ProductDetailClient({ product }: { product: Product }) {
@@ -32,13 +36,36 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     product.sizes && product.sizes.length > 0 ? product.sizes[0] : ""
   );
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<"desc" | "nutrition" | "ingredients" | "how">("nutrition");
+  const [activeTab, setActiveTab] = useState<"desc" | "nutrition" | "ingredients" | "how" | "authenticity">("nutrition");
+
+  // Find matching variant based on selected size
+  const selectedVariant = useMemo(() => {
+    if (product.variants && product.variants.length > 0 && selectedSize) {
+      const found = product.variants.find(
+        v => v.name.toLowerCase() === selectedSize.toLowerCase()
+      );
+      if (found) return found;
+    }
+    return null;
+  }, [product.variants, selectedSize]);
+
+  const currentPrice = selectedVariant ? selectedVariant.price : product.price;
+  const currentMrp = selectedVariant ? selectedVariant.mrp : product.mrp;
+  const currentStock = selectedVariant ? selectedVariant.stock : product.stock;
+  const currentDiscount =
+    currentMrp > currentPrice
+      ? Math.round(((currentMrp - currentPrice) / currentMrp) * 100)
+      : product.discount;
 
   const isWishlisted = wishlist.includes(product.id);
-  const isOutOfStock = product.stock === 0;
+  const isOutOfStock = currentStock === 0;
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity, selectedFlavour, selectedSize, currentPrice);
+  };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity, selectedFlavour, selectedSize);
+    addToCart(product, quantity, selectedFlavour, selectedSize, currentPrice);
     router.push("/checkout");
   };
 
@@ -52,6 +79,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           <Link href="/" className="hover:text-rose-600">Home</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <Link href="/shop" className="hover:text-rose-600">Shop</Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <Link href={`/shop?category=${encodeURIComponent(product.category)}`} className="hover:text-rose-600">
+            {product.category}
+          </Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-slate-900 font-bold truncate">{product.name}</span>
         </div>
@@ -88,39 +119,46 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 {product.name}
               </h1>
 
-              {/* Rating */}
+              {/* Rating & Authenticity */}
               <div className="flex items-center gap-3 mt-3">
                 <div className="flex items-center gap-1 text-amber-500 font-black text-sm bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
                   <Star className="w-4 h-4 fill-amber-400" />
                   <span>{product.rating}</span>
                 </div>
                 <span className="text-xs text-slate-500 font-medium">
-                  based on {product.reviewCount} verified ratings & reviews
+                  ({product.reviewCount} customer reviews) • <span className="text-emerald-600 font-bold">Lab Verified</span>
                 </span>
               </div>
             </div>
 
-            {/* Price Banner */}
+            {/* Dynamic Price Banner */}
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
               <div>
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl font-black text-slate-900">
-                    ₹{product.price.toLocaleString("en-IN")}
+                    ₹{currentPrice.toLocaleString("en-IN")}
                   </span>
-                  {product.mrp > product.price && (
+                  {currentMrp > currentPrice && (
                     <span className="text-sm text-slate-400 line-through font-medium">
-                      MRP ₹{product.mrp.toLocaleString("en-IN")}
+                      MRP ₹{currentMrp.toLocaleString("en-IN")}
                     </span>
                   )}
                 </div>
-                <span className="text-xs text-emerald-600 font-bold mt-1 block">
-                  Inclusive of all taxes • Free Shipping Eligible
-                </span>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-xs text-emerald-600 font-bold">
+                    Inclusive of all taxes • Free Shipping
+                  </span>
+                  {selectedVariant && (
+                    <span className="text-[10px] font-extrabold bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md">
+                      {selectedVariant.name}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              {product.discount > 0 && (
+              {currentDiscount > 0 && (
                 <div className="bg-rose-600 text-white font-black text-xs uppercase px-3 py-1.5 rounded-xl shadow-md">
-                  SAVE {product.discount}%
+                  SAVE {currentDiscount}%
                 </div>
               )}
             </div>
@@ -152,23 +190,38 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             {/* Size / Weight Picker */}
             {product.sizes && product.sizes.length > 0 && (
               <div>
-                <label className="text-xs font-bold text-slate-800 uppercase block mb-2">
-                  Select Size / Weight: <span className="text-rose-600 font-extrabold">{selectedSize}</span>
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold text-slate-800 uppercase block">
+                    Select Weight / Size: <span className="text-rose-600 font-extrabold">{selectedSize}</span>
+                  </label>
+                  <span className="text-[11px] font-semibold text-slate-500">
+                    {currentStock > 0 ? `In Stock (${currentStock} left)` : "Out of Stock"}
+                  </span>
+                </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map(sz => (
-                    <button
-                      key={sz}
-                      onClick={() => setSelectedSize(sz)}
-                      className={`px-4 py-2.5 rounded-xl text-xs font-bold border transition-all ${
-                        selectedSize === sz
-                          ? "bg-slate-900 text-white border-slate-900 shadow-md"
-                          : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
-                      }`}
-                    >
-                      {sz}
-                    </button>
-                  ))}
+                  {product.sizes.map(sz => {
+                    const varMatch = product.variants?.find(
+                      v => v.name.toLowerCase() === sz.toLowerCase()
+                    );
+                    const varPrice = varMatch ? varMatch.price : product.price;
+
+                    return (
+                      <button
+                        key={sz}
+                        onClick={() => setSelectedSize(sz)}
+                        className={`px-4 py-2.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-2 ${
+                          selectedSize === sz
+                            ? "bg-slate-900 text-white border-slate-900 shadow-md"
+                            : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
+                        }`}
+                      >
+                        <span>{sz}</span>
+                        <span className={`text-[10px] font-extrabold ${selectedSize === sz ? "text-rose-400" : "text-slate-500"}`}>
+                          ₹{varPrice}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -185,8 +238,9 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 </button>
                 <span className="px-4 text-sm font-bold text-slate-900">{quantity}</span>
                 <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-2.5 text-slate-600 hover:bg-slate-200 rounded-r-xl"
+                  onClick={() => setQuantity(Math.min(currentStock, quantity + 1))}
+                  disabled={quantity >= currentStock}
+                  className="p-2.5 text-slate-600 hover:bg-slate-200 rounded-r-xl disabled:opacity-40"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -196,7 +250,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4 pt-4">
               <button
-                onClick={() => addToCart(product, quantity, selectedFlavour, selectedSize)}
+                onClick={handleAddToCart}
                 disabled={isOutOfStock}
                 className={`py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
                   isOutOfStock
@@ -226,7 +280,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             <div className="pt-4 border-t border-slate-100 grid grid-cols-2 gap-4 text-xs font-semibold text-slate-600">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span>100% Genuine Guaranteed</span>
+                <span>100% Genuine Retail Sourced</span>
               </div>
               <div className="flex items-center gap-2">
                 <Truck className="w-4 h-4 text-rose-500" />
@@ -268,7 +322,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
-              INGREDIENTS
+              INGREDIENTS & ALLERGENS
             </button>
             <button
               onClick={() => setActiveTab("how")}
@@ -278,7 +332,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
-              HOW TO USE
+              USAGE DIRECTIONS
+            </button>
+            <button
+              onClick={() => setActiveTab("authenticity")}
+              className={`pb-3 text-xs sm:text-sm font-bold transition-all border-b-2 ${
+                activeTab === "authenticity"
+                  ? "border-rose-600 text-rose-600"
+                  : "border-transparent text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              BATCH & AUTHENTICITY
             </button>
           </div>
 
@@ -318,20 +382,49 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <p>{product.description}</p>
               <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center gap-3 text-emerald-900 text-xs font-semibold">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                <span>Labdoor USA Certified & Direct Manufacturer Batch Authenticity Guaranteed.</span>
+                <span>Direct Distributor Sourced • Complete Authenticity Guaranteed.</span>
               </div>
             </div>
           )}
 
           {activeTab === "ingredients" && (
-            <div className="text-sm text-slate-700 leading-relaxed max-w-3xl">
+            <div className="text-sm text-slate-700 leading-relaxed max-w-3xl space-y-3">
               <p className="font-medium">{product.ingredients}</p>
+              <p className="text-xs text-slate-500 font-bold uppercase mt-2">
+                Allergen Information: Contains milk products (Whey/Milk Solids) or Peanuts where specified. Prepared in an FSSAI compliant facility.
+              </p>
             </div>
           )}
 
           {activeTab === "how" && (
-            <div className="text-sm text-slate-700 leading-relaxed max-w-3xl">
+            <div className="text-sm text-slate-700 leading-relaxed max-w-3xl space-y-3">
               <p className="font-medium">{product.howToUse}</p>
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1">
+                <p className="font-bold text-slate-900">Storage Instructions:</p>
+                <p>Store in a cool, dry place away from direct sunlight. Keep container tightly sealed after use.</p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "authenticity" && (
+            <div className="text-sm text-slate-700 leading-relaxed max-w-3xl space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium">
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-slate-900">
+                    <Building2 className="w-4 h-4 text-rose-600" />
+                    <span>Brand & Sourcing</span>
+                  </div>
+                  <p>Authentic products sourced directly from authorized brand logistics partners for {product.brand}.</p>
+                </div>
+
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-slate-900">
+                    <Calendar className="w-4 h-4 text-rose-600" />
+                    <span>Fresh Batch Guarantee</span>
+                  </div>
+                  <p>All stock dispatches carry a minimum of 12-18 months shelf life remaining prior to expiry.</p>
+                </div>
+              </div>
             </div>
           )}
         </div>

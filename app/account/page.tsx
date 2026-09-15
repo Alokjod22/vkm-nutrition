@@ -12,29 +12,34 @@ import {
   Heart,
   MapPin,
   CheckCircle2,
-  Clock,
   Truck,
-  Box,
-  ChevronRight,
   User,
-  ShoppingBag
+  ShoppingBag,
+  Search
 } from "lucide-react";
 import Image from "next/image";
 
 function AccountContent() {
   const searchParams = useSearchParams();
-  const highlightedOrderId = searchParams?.get("orderId");
+  const highlightedOrderId = searchParams?.get("orderId") || "";
 
   const { wishlist } = useStore();
   const [orders, setOrders] = useState<Order[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
   const [activeTab, setActiveTab] = useState<"orders" | "wishlist" | "addresses">("orders");
+  const [orderSearchId, setOrderSearchId] = useState<string>("");
 
   useEffect(() => {
     setOrders(db.getOrders());
     const allProds = db.getProducts();
     setWishlistProducts(allProds.filter(p => wishlist.includes(p.id)));
   }, [wishlist]);
+
+  const displayedOrders = orders.filter(o => {
+    if (!orderSearchId.trim()) return true;
+    const q = orderSearchId.toLowerCase().trim();
+    return o.orderNumber.toLowerCase().includes(q) || o.id.toLowerCase().includes(q);
+  });
 
   const getStatusStep = (status: Order["orderStatus"]) => {
     switch (status) {
@@ -49,13 +54,27 @@ function AccountContent() {
 
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-md">
-          <User className="w-6 h-6" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-md">
+            <User className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">MY ACCOUNT</h1>
+            <p className="text-xs text-slate-500 font-medium">Manage your orders, live shipment tracking, and saved wishlist.</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">MY ACCOUNT</h1>
-          <p className="text-xs text-slate-500 font-medium">Manage your orders, live shipment tracking, and saved wishlist.</p>
+
+        {/* Quick Order Lookup Input */}
+        <div className="relative max-w-xs w-full">
+          <input
+            type="text"
+            placeholder="Search Order # or ID..."
+            value={orderSearchId}
+            onChange={e => setOrderSearchId(e.target.value)}
+            className="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white"
+          />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
         </div>
       </div>
 
@@ -95,17 +114,21 @@ function AccountContent() {
       {/* TAB 1: ORDERS LIST & TRACKING TIMELINE */}
       {activeTab === "orders" && (
         <div className="space-y-6">
-          {orders.length === 0 ? (
+          {displayedOrders.length === 0 ? (
             <div className="bg-white p-12 text-center rounded-3xl border border-slate-200">
               <ShoppingBag className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-slate-800">No orders placed yet</h3>
-              <p className="text-xs text-slate-500 mt-1">Start shopping authentic supplements to see order tracking here.</p>
+              <h3 className="text-base font-bold text-slate-800">
+                {orderSearchId ? "No matching orders found" : "No orders placed yet"}
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">
+                {orderSearchId ? "Check your order number and search again." : "Start shopping authentic supplements to see order tracking here."}
+              </p>
               <Link href="/shop" className="inline-block mt-4 px-5 py-2.5 bg-rose-600 text-white rounded-xl font-bold text-xs">
                 Explore Catalog
               </Link>
             </div>
           ) : (
-            orders.map(order => {
+            displayedOrders.map(order => {
               const currentStep = getStatusStep(order.orderStatus);
               const isHighlighted = order.id === highlightedOrderId;
 
@@ -182,7 +205,9 @@ function AccountContent() {
                             </div>
                             <div>
                               <div className="text-xs font-bold text-slate-900">{item.productName}</div>
-                              <div className="text-[11px] text-slate-500">{item.brand} • Qty: {item.quantity}</div>
+                              <div className="text-[11px] text-slate-500">
+                                {item.brand} {item.size ? `• ${item.size}` : ""} {item.flavour ? `• ${item.flavour}` : ""} • Qty: {item.quantity}
+                              </div>
                             </div>
                           </div>
                           <span className="text-xs font-black text-slate-900">₹{(item.price * item.quantity).toLocaleString("en-IN")}</span>
@@ -246,7 +271,7 @@ export default function CustomerAccountPage() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
-      <Suspense fallback={<div className="p-12 text-center text-xs text-slate-500">Loading Account...</div>}>
+      <Suspense fallback={<div className="flex-1 flex items-center justify-center p-12 text-xs font-bold text-slate-400">Loading Account Details...</div>}>
         <AccountContent />
       </Suspense>
       <Footer />
