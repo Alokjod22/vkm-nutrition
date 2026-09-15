@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { db, Product } from "@/lib/db";
 import { useStore } from "@/lib/context";
-import { Boxes, Plus, Minus, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Boxes, Plus, Minus, AlertTriangle, CheckCircle2, Download, Search, RefreshCw } from "lucide-react";
 
 export default function AdminInventoryPage() {
   const { showNotification } = useStore();
   const [products, setProducts] = useState<Product[]>([]);
+  const [stockFilter, setStockFilter] = useState<"all" | "low" | "out">("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const loadProducts = () => {
     setProducts(db.getProducts());
@@ -24,13 +26,116 @@ export default function AdminInventoryPage() {
     showNotification(`Adjusted stock for ${name}`);
   };
 
+  const handleBatchRestockAllLow = () => {
+    const lowProds = products.filter(p => p.stock <= p.lowStockThreshold);
+    lowProds.forEach(p => db.updateStock(p.id, 25));
+    loadProducts();
+    showNotification(`Restocked ${lowProds.length} low-stock items by +25 units each!`);
+  };
+
+  const handleExportCSV = () => {
+    if (products.length === 0) return;
+    const headers = ["Product Name", "Brand", "Category", "Selling Price", "MRP", "Current Stock", "Low Stock Threshold", "Stock Status"];
+    const rows = products.map(p => {
+      const status = p.stock === 0 ? "Out of Stock" : p.stock <= p.lowStockThreshold ? "Low Stock" : "Healthy";
+      return [
+        `"${p.name}"`,
+        p.brand,
+        p.category,
+        p.price,
+        p.mrp,
+        p.stock,
+        p.lowStockThreshold,
+        status
+      ];
+    });
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `vkm_nutrition_inventory_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showNotification("Exported inventory CSV audit report!");
+  };
+
+  const filteredProducts = products.filter(p => {
+    if (stockFilter === "low" && p.stock > p.lowStockThreshold) return false;
+    if (stockFilter === "out" && p.stock > 0) return false;
+    if (searchQuery.trim() && !p.name.toLowerCase().includes(searchQuery.toLowerCase().trim())) return false;
+    return true;
+  });
+
+  const lowStockCount = products.filter(p => p.stock <= p.lowStockThreshold).length;
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-black text-white tracking-tight">INVENTORY AUDIT & STOCK MANAGER</h1>
-        <p className="text-xs text-slate-400 font-medium">
-          Monitor real-time inventory counts across MuscleBlaze, Pintola & Alpino.
-        </p>
+      {/* Title & Batch Actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black text-white tracking-tight">INVENTORY AUDIT & STOCK MANAGER</h1>
+          <p className="text-xs text-slate-400 font-medium">
+            Monitor real-time inventory counts across MuscleBlaze, Pintola & Alpino.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {lowStockCount > 0 && (
+            <button
+              onClick={handleBatchRestockAllLow}
+              className="px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-rose-600/20 flex items-center justify-center gap-2 transition-all"
+            >
+              <RefreshCw className="w-4 h-4 animate-spin-once" />
+              <span>BATCH RESTOCK LOW ITEMS (+25)</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleExportCSV}
+            className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 flex items-center justify-center gap-2 transition-all"
+          >
+            <Download className="w-4 h-4 text-emerald-400" />
+            <span>EXPORT INVENTORY CSV</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Search & Stock Status Filters */}
+      <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div className="relative flex-1 max-w-sm">
+          <input
+            type="text"
+            placeholder="Search inventory by product name..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-500"
+          />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+        </div>
+
+        <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
+          <span>Filter Stock:</span>
+          <button
+            onClick={() => setStockFilter("all")}
+            className={`px-3 py-1.5 rounded-lg transition-colors ${stockFilter === "all" ? "bg-rose-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}
+          >
+            All Items ({products.length})
+          </button>
+          <button
+            onClick={() => setStockFilter("low")}
+            className={`px-3 py-1.5 rounded-lg transition-colors ${stockFilter === "low" ? "bg-amber-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}
+          >
+            Low Stock ({lowStockCount})
+          </button>
+          <button
+            onClick={() => setStockFilter("out")}
+            className={`px-3 py-1.5 rounded-lg transition-colors ${stockFilter === "out" ? "bg-red-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}
+          >
+            Out of Stock ({products.filter(p => p.stock === 0).length})
+          </button>
+        </div>
       </div>
 
       {/* Real-time Inventory Table */}
@@ -48,7 +153,7 @@ export default function AdminInventoryPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800 font-medium">
-              {products.map(prod => {
+              {filteredProducts.map(prod => {
                 const isOut = prod.stock === 0;
                 const isLow = prod.stock > 0 && prod.stock <= prod.lowStockThreshold;
 
