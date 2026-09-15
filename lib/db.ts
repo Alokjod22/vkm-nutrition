@@ -98,6 +98,18 @@ export interface Banner {
   isActive: boolean;
 }
 
+export interface AdminNotification {
+  id: string;
+  title: string;
+  message: string;
+  orderId: string;
+  totalAmount: number;
+  customerName: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+
 // Initial 50 Product Seed List
 export const INITIAL_PRODUCTS: Product[] = [
   // --- MUSCLEBLAZE (17 PRODUCTS) ---
@@ -1610,12 +1622,36 @@ export const INITIAL_BANNERS: Banner[] = [
   }
 ];
 
+export const INITIAL_NOTIFICATIONS: AdminNotification[] = [
+  {
+    id: "notif-1",
+    title: "New Order #NB10294",
+    message: "Rahul Verma placed an order for ₹3,698 via UPI",
+    orderId: "ord-101",
+    totalAmount: 3698,
+    customerName: "Rahul Verma",
+    createdAt: "2026-03-01T10:30:00Z",
+    isRead: false
+  },
+  {
+    id: "notif-2",
+    title: "New Order #NB10293",
+    message: "Asha Sharma placed an order for ₹947 via Card",
+    orderId: "ord-102",
+    totalAmount: 947,
+    customerName: "Asha Sharma",
+    createdAt: "2026-03-02T14:15:00Z",
+    isRead: false
+  }
+];
+
 // In-Memory Database Store Helper (Persisted in LocalStorage when on Client)
 class DataStore {
   private products: Product[] = INITIAL_PRODUCTS;
   private orders: Order[] = INITIAL_ORDERS;
   private coupons: Coupon[] = INITIAL_COUPONS;
   private banners: Banner[] = INITIAL_BANNERS;
+  private notifications: AdminNotification[] = INITIAL_NOTIFICATIONS;
   private isLoaded = false;
 
   private loadClientData() {
@@ -1629,6 +1665,8 @@ class DataStore {
       if (c) this.coupons = JSON.parse(c);
       const b = localStorage.getItem("nb_banners");
       if (b) this.banners = JSON.parse(b);
+      const n = localStorage.getItem("nb_admin_notifications");
+      if (n) this.notifications = JSON.parse(n);
       this.isLoaded = true;
     } catch (e) {
       console.error("Failed to load local storage", e);
@@ -1642,6 +1680,7 @@ class DataStore {
       localStorage.setItem("nb_orders", JSON.stringify(this.orders));
       localStorage.setItem("nb_coupons", JSON.stringify(this.coupons));
       localStorage.setItem("nb_banners", JSON.stringify(this.banners));
+      localStorage.setItem("nb_admin_notifications", JSON.stringify(this.notifications));
     } catch (e) {
       console.error("Failed to save local storage", e);
     }
@@ -1707,8 +1746,43 @@ class DataStore {
     });
 
     this.orders.unshift(newOrder);
+
+    // Create Admin Notification
+    const newNotif: AdminNotification = {
+      id: "notif-" + Date.now(),
+      title: `New Order ${orderNum}`,
+      message: `${newOrder.customerName} placed order ${orderNum} for ₹${newOrder.totalAmount.toLocaleString("en-IN")} via ${newOrder.paymentMethod}`,
+      orderId: newId,
+      totalAmount: newOrder.totalAmount,
+      customerName: newOrder.customerName,
+      createdAt: new Date().toISOString(),
+      isRead: false
+    };
+    this.notifications.unshift(newNotif);
+
     this.saveClientData();
     return newOrder;
+  }
+
+  // NOTIFICATIONS
+  getAdminNotifications(): AdminNotification[] {
+    this.loadClientData();
+    return this.notifications;
+  }
+
+  markNotificationRead(id: string) {
+    this.loadClientData();
+    const n = this.notifications.find(x => x.id === id);
+    if (n) {
+      n.isRead = true;
+      this.saveClientData();
+    }
+  }
+
+  markAllNotificationsRead() {
+    this.loadClientData();
+    this.notifications.forEach(n => n.isRead = true);
+    this.saveClientData();
   }
 
   updateOrderStatus(orderId: string, status: Order["orderStatus"]) {
