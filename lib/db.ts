@@ -109,6 +109,67 @@ export interface AdminNotification {
   isRead: boolean;
 }
 
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  registeredDate: string;
+  totalOrders: number;
+  totalSpent: number;
+  lastOrderDate: string;
+  segment: "VIP" | "High Value" | "Returning" | "New";
+  status: "Active" | "Blocked";
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    pincode: string;
+  };
+}
+
+export interface AdminTeamUser {
+  id: string;
+  name: string;
+  email: string;
+  role: "Super Admin" | "Store Manager" | "Order Manager" | "Inventory Manager" | "Support Agent";
+  status: "Active" | "Inactive";
+  lastActive: string;
+}
+
+export interface AuditLog {
+  id: string;
+  actor: string;
+  action: string;
+  target: string;
+  details: string;
+  timestamp: string;
+  category: "Inventory" | "Order" | "Product" | "User" | "Marketing";
+}
+
+export interface CategoryItem {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  seoTitle: string;
+  seoDescription: string;
+  displayOrder: number;
+  productCount: number;
+  isActive: boolean;
+}
+
+export interface BrandItem {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  logoUrl: string;
+  productCount: number;
+  isActive: boolean;
+}
+
+
 
 // Initial 50 Product Seed List
 export const INITIAL_PRODUCTS: Product[] = [
@@ -1645,6 +1706,76 @@ export const INITIAL_NOTIFICATIONS: AdminNotification[] = [
   }
 ];
 
+export const INITIAL_CUSTOMERS: Customer[] = [
+  {
+    id: "cust-1",
+    name: "Rahul Verma",
+    email: "rahul.verma@example.com",
+    phone: "+91 98765 43210",
+    registeredDate: "2025-11-10",
+    totalOrders: 4,
+    totalSpent: 12450,
+    lastOrderDate: "2026-03-01",
+    segment: "VIP",
+    status: "Active",
+    address: { street: "42 Connaught Place, Block B", city: "New Delhi", state: "Delhi", pincode: "110001" }
+  },
+  {
+    id: "cust-2",
+    name: "Asha Sharma",
+    email: "asha.sharma@example.com",
+    phone: "+91 91234 56789",
+    registeredDate: "2026-01-05",
+    totalOrders: 2,
+    totalSpent: 3840,
+    lastOrderDate: "2026-03-02",
+    segment: "Returning",
+    status: "Active",
+    address: { street: "108 Koregaon Park, Lane 7", city: "Pune", state: "Maharashtra", pincode: "411001" }
+  },
+  {
+    id: "cust-3",
+    name: "Vikram Malhotra",
+    email: "vikram.m@example.com",
+    phone: "+91 99887 76655",
+    registeredDate: "2026-02-14",
+    totalOrders: 3,
+    totalSpent: 8900,
+    lastOrderDate: "2026-02-28",
+    segment: "High Value",
+    status: "Active",
+    address: { street: "55 Indiranagar 100ft Road", city: "Bengaluru", state: "Karnataka", pincode: "560038" }
+  }
+];
+
+export const INITIAL_ADMIN_USERS: AdminTeamUser[] = [
+  { id: "adm-1", name: "VKM Lead Admin", email: "admin@vkmnutrition.in", role: "Super Admin", status: "Active", lastActive: "Just now" },
+  { id: "adm-2", name: "Priya Sharma", email: "priya.s@vkmnutrition.in", role: "Store Manager", status: "Active", lastActive: "15 mins ago" },
+  { id: "adm-3", name: "Amit Kumar", email: "amit.k@vkmnutrition.in", role: "Order Manager", status: "Active", lastActive: "1 hour ago" },
+  { id: "adm-4", name: "Suresh Patel", email: "suresh.p@vkmnutrition.in", role: "Inventory Manager", status: "Active", lastActive: "3 hours ago" }
+];
+
+export const INITIAL_AUDIT_LOGS: AuditLog[] = [
+  { id: "log-1", actor: "VKM Lead Admin", action: "Stock Adjustment", target: "Biozyme Performance Whey 1 KG", details: "Adjusted stock +10 units", timestamp: "2026-03-15T18:30:00Z", category: "Inventory" },
+  { id: "log-2", actor: "Amit Kumar", action: "Order Status Update", target: "Order #NB10294", details: "Changed status from Packed -> Shipped", timestamp: "2026-03-15T16:20:00Z", category: "Order" },
+  { id: "log-3", actor: "Priya Sharma", action: "Coupon Created", target: "WELCOME100", details: "Created fixed ₹100 discount coupon", timestamp: "2026-03-14T11:15:00Z", category: "Marketing" }
+];
+
+export const INITIAL_CATEGORIES: CategoryItem[] = [
+  { id: "cat-1", name: "Protein", slug: "protein", description: "Authentic Whey Protein Concentrate, Isolate & Mass Gainers", seoTitle: "Buy Genuine Whey Protein Online - VKM Nutrition", seoDescription: "Shop 100% authentic Whey Protein from MuscleBlaze at wholesale prices.", displayOrder: 1, productCount: 17, isActive: true },
+  { id: "cat-2", name: "Creatine", slug: "creatine", description: "Micronized CreAMP & Pure Creatine Monohydrate", seoTitle: "Creatine Monohydrate Supplements - VKM Nutrition", seoDescription: "Explosive strength & muscle volumization creatine supplements.", displayOrder: 2, productCount: 4, isActive: true },
+  { id: "cat-3", name: "Oats", slug: "oats", description: "High Protein Super Oats with Real Fruits & Nuts", seoTitle: "High Protein Super Oats - Alpino & Pintola", seoDescription: "Nutritious chocolate and natural protein oats.", displayOrder: 3, productCount: 9, isActive: true },
+  { id: "cat-4", name: "Muesli", slug: "muesli", description: "Crispy Superfruit & Dark Chocolate Muesli", seoTitle: "High Protein Muesli Online", seoDescription: "Healthy breakfast muesli rich in fiber & protein.", displayOrder: 4, productCount: 4, isActive: true },
+  { id: "cat-5", name: "Peanut Butter", slug: "peanut-butter", description: "Organic All Natural & Dark Chocolate Peanut Butter", seoTitle: "Organic Peanut Butter - Pintola & Alpino", seoDescription: "Delicious non-GMO high protein peanut spreads.", displayOrder: 5, productCount: 12, isActive: true },
+  { id: "cat-6", name: "Vitamins & Wellness", slug: "vitamins-wellness", description: "Daily Multivitamins, Fish Oil & Pre-Workouts", seoTitle: "Multivitamins & Pre-Workout Supplements", seoDescription: "Essential vitamins, omega 3, and performance pre-workouts.", displayOrder: 6, productCount: 4, isActive: true }
+];
+
+export const INITIAL_BRANDS: BrandItem[] = [
+  { id: "b-1", name: "MuscleBlaze", slug: "muscleblaze", description: "India's leading sports nutrition brand for Whey, Creatine & Mass Gainers.", logoUrl: "/products/muscleblaze_01_MuscleBlaze_Biozyme_Perfo.jpg", productCount: 17, isActive: true },
+  { id: "b-2", name: "Pintola", slug: "pintola", description: "Organic nut butters, high protein oats & healthy breakfast spreads.", logoUrl: "/products/pintola_01_Pintola_All_Natural_Peanu.jpg", productCount: 16, isActive: true },
+  { id: "b-3", name: "Alpino", slug: "alpino", description: "Superfoods, chocolate peanut butter, and high-fiber oats.", logoUrl: "/products/alpino_01_Alpino_High_Protein_Super.jpg", productCount: 17, isActive: true }
+];
+
 // In-Memory Database Store Helper (Persisted in LocalStorage when on Client)
 class DataStore {
   private products: Product[] = INITIAL_PRODUCTS;
@@ -1652,6 +1783,11 @@ class DataStore {
   private coupons: Coupon[] = INITIAL_COUPONS;
   private banners: Banner[] = INITIAL_BANNERS;
   private notifications: AdminNotification[] = INITIAL_NOTIFICATIONS;
+  private customers: Customer[] = INITIAL_CUSTOMERS;
+  private adminUsers: AdminTeamUser[] = INITIAL_ADMIN_USERS;
+  private auditLogs: AuditLog[] = INITIAL_AUDIT_LOGS;
+  private categories: CategoryItem[] = INITIAL_CATEGORIES;
+  private brands: BrandItem[] = INITIAL_BRANDS;
   private isLoaded = false;
 
   private loadClientData() {
@@ -1667,6 +1803,16 @@ class DataStore {
       if (b) this.banners = JSON.parse(b);
       const n = localStorage.getItem("nb_admin_notifications");
       if (n) this.notifications = JSON.parse(n);
+      const cust = localStorage.getItem("nb_customers");
+      if (cust) this.customers = JSON.parse(cust);
+      const adm = localStorage.getItem("nb_admin_team");
+      if (adm) this.adminUsers = JSON.parse(adm);
+      const log = localStorage.getItem("nb_audit_logs");
+      if (log) this.auditLogs = JSON.parse(log);
+      const cat = localStorage.getItem("nb_categories");
+      if (cat) this.categories = JSON.parse(cat);
+      const br = localStorage.getItem("nb_brands");
+      if (br) this.brands = JSON.parse(br);
       this.isLoaded = true;
     } catch (e) {
       console.error("Failed to load local storage", e);
@@ -1681,6 +1827,11 @@ class DataStore {
       localStorage.setItem("nb_coupons", JSON.stringify(this.coupons));
       localStorage.setItem("nb_banners", JSON.stringify(this.banners));
       localStorage.setItem("nb_admin_notifications", JSON.stringify(this.notifications));
+      localStorage.setItem("nb_customers", JSON.stringify(this.customers));
+      localStorage.setItem("nb_admin_team", JSON.stringify(this.adminUsers));
+      localStorage.setItem("nb_audit_logs", JSON.stringify(this.auditLogs));
+      localStorage.setItem("nb_categories", JSON.stringify(this.categories));
+      localStorage.setItem("nb_brands", JSON.stringify(this.brands));
     } catch (e) {
       console.error("Failed to save local storage", e);
     }
@@ -1822,6 +1973,72 @@ class DataStore {
     this.loadClientData();
     return this.banners;
   }
+
+  // CUSTOMERS
+  getCustomers(): Customer[] {
+    this.loadClientData();
+    return this.customers;
+  }
+
+  // ADMIN USERS
+  getAdminUsers(): AdminTeamUser[] {
+    this.loadClientData();
+    return this.adminUsers;
+  }
+
+  saveAdminUser(user: AdminTeamUser) {
+    this.loadClientData();
+    const idx = this.adminUsers.findIndex(u => u.id === user.id);
+    if (idx >= 0) this.adminUsers[idx] = user;
+    else this.adminUsers.unshift(user);
+    this.saveClientData();
+  }
+
+  // AUDIT LOGS
+  getAuditLogs(): AuditLog[] {
+    this.loadClientData();
+    return this.auditLogs;
+  }
+
+  addAuditLog(logData: Omit<AuditLog, "id" | "timestamp">) {
+    this.loadClientData();
+    const newLog: AuditLog = {
+      ...logData,
+      id: "log-" + Date.now(),
+      timestamp: new Date().toISOString()
+    };
+    this.auditLogs.unshift(newLog);
+    this.saveClientData();
+  }
+
+  // CATEGORIES
+  getCategories(): CategoryItem[] {
+    this.loadClientData();
+    return this.categories;
+  }
+
+  saveCategory(cat: CategoryItem) {
+    this.loadClientData();
+    const idx = this.categories.findIndex(c => c.id === cat.id);
+    if (idx >= 0) this.categories[idx] = cat;
+    else this.categories.push(cat);
+    this.saveClientData();
+  }
+
+  // BRANDS
+  getBrands(): BrandItem[] {
+    this.loadClientData();
+    return this.brands;
+  }
+
+  saveBrand(brand: BrandItem) {
+    this.loadClientData();
+    const idx = this.brands.findIndex(b => b.id === brand.id);
+    if (idx >= 0) this.brands[idx] = brand;
+    else this.brands.push(brand);
+    this.saveClientData();
+  }
 }
 
 export const db = new DataStore();
+

@@ -18,7 +18,21 @@ import {
   ChevronRight,
   Clock,
   Menu,
-  X
+  X,
+  Users,
+  Star,
+  Gift,
+  Layers,
+  BarChart3,
+  CreditCard,
+  Truck,
+  FileText,
+  Shield,
+  ShieldAlert,
+  Settings,
+  Key,
+  Search,
+  Layout
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -56,19 +70,55 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  const navLinks = [
-    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Products", href: "/admin/products", icon: Package },
-    { name: "Inventory", href: "/admin/inventory", icon: Boxes },
-    { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
-    { name: "Coupons & Banners", href: "/admin/marketing", icon: Tag },
+  const navGroups = [
+    {
+      group: "OVERVIEW",
+      links: [
+        { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+        { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+        { name: "Search Insights", href: "/admin/search-analytics", icon: Search },
+      ]
+    },
+    {
+      group: "CATALOG & ORDERS",
+      links: [
+        { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
+        { name: "Products", href: "/admin/products", icon: Package },
+        { name: "Variants", href: "/admin/variants", icon: Layers },
+        { name: "Inventory", href: "/admin/inventory", icon: Boxes },
+        { name: "Categories & Brands", href: "/admin/categories", icon: Tag },
+        { name: "Payments", href: "/admin/payments", icon: CreditCard },
+      ]
+    },
+    {
+      group: "CUSTOMERS & MARKETING",
+      links: [
+        { name: "Customers", href: "/admin/customers", icon: Users },
+        { name: "Reviews", href: "/admin/reviews", icon: Star },
+        { name: "Coupons & Banners", href: "/admin/marketing", icon: Tag },
+        { name: "Goal Stacks & Bundles", href: "/admin/bundles", icon: Gift },
+        { name: "Homepage CMS", href: "/admin/cms", icon: Layout },
+        { name: "Shipping & Pincodes", href: "/admin/shipping", icon: Truck },
+      ]
+    },
+    {
+      group: "GOVERNANCE & SECURITY",
+      links: [
+        { name: "Tax & Invoices", href: "/admin/tax-invoices", icon: FileText },
+        { name: "Admin Team (RBAC)", href: "/admin/users", icon: Shield },
+        { name: "Security Center", href: "/admin/security", icon: ShieldAlert },
+        { name: "Audit Logs", href: "/admin/logs", icon: Clock },
+        { name: "Store Settings", href: "/admin/settings", icon: Settings },
+        { name: "API & Integrations", href: "/admin/integrations", icon: Key },
+      ]
+    }
   ];
 
   return (
     <div className="min-h-screen flex bg-slate-950 text-slate-100 font-sans">
       {/* Sidebar for Desktop */}
       <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between hidden lg:flex">
-        <div className="p-6 space-y-8">
+        <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-100px)]">
           {/* Logo */}
           <Link href="/admin/dashboard" className="flex items-center gap-2">
             <div className="w-9 h-9 bg-rose-600 rounded-xl flex items-center justify-center font-black text-white text-lg">
@@ -84,26 +134,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </Link>
 
-          {/* Navigation */}
-          <nav className="space-y-1">
-            {navLinks.map(link => {
-              const IconComp = link.icon;
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
-                    isActive
-                      ? "bg-rose-600 text-white shadow-lg shadow-rose-600/20"
-                      : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                  }`}
-                >
-                  <IconComp className="w-4 h-4" />
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
+          {/* Navigation Groups */}
+          <nav className="space-y-6 pt-2">
+            {navGroups.map(group => (
+              <div key={group.group} className="space-y-1">
+                <div className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 px-3 mb-2">
+                  {group.group}
+                </div>
+                {group.links.map(link => {
+                  const IconComp = link.icon;
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                        isActive
+                          ? "bg-rose-600 text-white shadow-lg shadow-rose-600/20"
+                          : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                      }`}
+                    >
+                      <IconComp className="w-4 h-4" />
+                      <span>{link.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
           </nav>
         </div>
 
@@ -114,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             target="_blank"
             className="flex items-center justify-between p-2.5 bg-slate-800/80 hover:bg-slate-800 rounded-xl text-xs font-semibold text-slate-300 transition-colors"
           >
-            <span>View Live Customer Store</span>
+            <span>View Live Storefront</span>
             <ExternalLink className="w-3.5 h-3.5 text-rose-400" />
           </Link>
 
@@ -154,7 +211,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Menu className="w-6 h-6" />
             </button>
             <span className="text-xs font-bold uppercase tracking-wider text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-full">
-              Real-Time Database Active
+              Full E-Commerce Operations Suite Active
             </span>
           </div>
 
@@ -167,7 +224,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 title="Live Order Alerts"
               >
                 <Bell className="w-4 h-4 text-rose-400" />
-                <span className="hidden sm:inline">Order Alerts</span>
+                <span className="hidden sm:inline">Alerts</span>
                 {unreadCount > 0 && (
                   <span className="bg-rose-600 text-white font-black text-[10px] px-1.5 py-0.5 rounded-full animate-bounce">
                     {unreadCount}
