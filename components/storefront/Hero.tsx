@@ -31,20 +31,14 @@ export default function Hero() {
               100% Genuine MuscleBlaze, Pintola & Alpino products. Premium Whey Protein, CreAMP Creatine, High-Protein Oats & Organic Peanut Butters delivered directly to your door.
             </p>
 
-            {/* CTAs */}
+            {/* Combined CTA */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
               <Link
                 href="/shop?category=Protein"
-                className="px-7 py-4 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold rounded-2xl text-sm shadow-xl shadow-rose-600/30 flex items-center gap-2 transition-all hover:scale-105"
+                className="px-8 py-4 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-black rounded-2xl text-sm shadow-xl shadow-rose-600/30 flex items-center gap-2.5 transition-all hover:scale-105"
               >
-                <span>SHOP PROTEIN</span>
+                <span>SHOP PROTEIN & CREATINE</span>
                 <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/shop?category=Creatine"
-                className="px-7 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-2xl text-sm border border-slate-700 transition-all hover:scale-105"
-              >
-                <span>SHOP CREATINE</span>
               </Link>
             </div>
           </div>
